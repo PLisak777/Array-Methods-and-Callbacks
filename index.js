@@ -23,24 +23,24 @@ console.log(finalsTeam[0]);
 /* Task 2: Create a function called  getFinals that takes `data` as an argument and returns an array of objects with only finals data */
 
 function getFinals(data) {
-    return data.filter((final) => final["Stage"] === "Final");
-}
+    return data.filter((final) => final["Stage"] === "Final"); /* 'data' stands in for the callback array */
+} /* used 'final' as keyword. created anonymous function to point to the array object and give it a true/false */
 
-console.log(getFinals(fifaData));
+console.log(getFinals(fifaData)); /* getFinals pulls data directly from the array to populate */
 
 /* Task 3: Implement a higher-order function called `getYears` that accepts the callback function `getFinals`, and returns an array called `years` containing all of the years in the dataset */
 
 function getYears(data, callBack) {
-    return callBack(data).map((years) => years["Year"]);
-}
+    return callBack(data).map((years) => years["Year"]); /* callBack takes the place of getFinals since it is being passed into another function */
+} /* spent way too much time trying to get this to work properly when all I had to do was tell the map function to use the keyword 'years' to populate the new array with the object values */
 
-console.log(getYears(fifaData, getFinals));
+console.log(getYears(fifaData, getFinals)); /* we have to invoke fifaData otherwise we get callBack is not a function */
 
 /* Task 5: Implement a higher-order function called `getWinners`, that accepts the callback function `getFinals()` and determine the winner (home or away) of each `finals` game. Return the name of all winning countries in an array called `winners` */
 
-function getWins(item) {
+function getWins(item) { /* needed to create a global function to call on so I can use it later for the next task. plus it makes things cleaner */
     if (item['Home Team Goals'] > item['Away Team Goals']) {
-        return item['Home Team Initials'];
+        return item['Home Team Initials']; /* would like to use full team names here, but initials were necessary to make it work on next task */
     } else return item["Away Team Initials"];
 }
 
@@ -59,9 +59,9 @@ Parameters:
  */
 
 function getWinnersByYear(data) {
-    const winYrs = [];
+    const winYrs = []; /* forEach doesn't create new array, so needed to declare that here */
     getFinals(data).forEach(arr => {
-        winYrs.push(`In ${arr['Year']}, ${(getWinners([arr], getFinals))} won the World Cup!`)
+        winYrs.push(`In ${arr['Year']}, ${(getWinners([arr], getFinals))} won the World Cup!`) /* created anon function to push values into winYrs. took a while to figure out syntax. */
     })
     return winYrs;
 }
@@ -73,7 +73,7 @@ console.log(getWinnersByYear(fifaData, getWinners, getYears));
 function getAverageGoals(data) {
     return ({
         'Home Average': (data.map(goals => goals['Home Team Goals']).reduce((total, current) => total += current, 0) / data.length).toFixed(2),
-
+/* mapped data for specific object output, reduced and created anon func to perform calculations. total = total + current / array.length */
         'Away Average': (data.map(goals => goals['Away Team Goals']).reduce((total, current) => total += current, 0) / data.length).toFixed(2)
     });
 }
@@ -95,7 +95,7 @@ function getCountryWins(data, teamInitials) {
         }
         return total;
     }, 0);   
-    return `${teamInitials} has won ${countWins} World Cups! Wow!!` 
+    return `${teamInitials} has won ${countWins} World Cups!` 
 }
 
 console.log(getCountryWins(fifaData, "USA"));
